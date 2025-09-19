@@ -1,6 +1,6 @@
 # Telemedicine Hackathon Project
 
-A full-stack **Telemedicine application** built for a hackathon.  
+A full-stack **Telemedicine application** built our first prototype for a hackathon.  
 It provides an online platform for patients and doctors to connect via real-time consultation, appointment booking, and health management.
 
 ---
@@ -61,6 +61,7 @@ git clone https://github.com/RakeshKayal/Telemedicine-.git
 cd telemedicine-hackathon<br/>
 👨‍💻 Team
 
-Developed by Rakesh Kayal, Debajyoti Parui, Aritra Adak, Mehbub Hossain Sk, Aprita mity for Hackathon
+Developed by Rakesh Kayal, Debajyoti Parui, Prabhat Maldal,Aritra Adak, Mehbub Hossain Sk, Aprita mity for Hackathon
+
 
 
