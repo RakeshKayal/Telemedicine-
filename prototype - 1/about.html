@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #e74c3c, #3498db);
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .mission-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mission-content p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .mission-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .highlight-item i {
+            font-size: 2rem;
+            color: #27ae60;
+            background: #eafaf1;
+            padding: 1rem;
+            border-radius: 50%;
+        }
+
+        .highlight-item div h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-item div p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .mission-visual {
+            background: linear-gradient(135deg, #e74c3c, #3498db);
+            height: 500px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><circle fill="rgba(255,255,255,0.1)" cx="100" cy="100" r="50"/><circle fill="rgba(255,255,255,0.05)" cx="300" cy="150" r="80"/><circle fill="rgba(255,255,255,0.08)" cx="200" cy="300" r="60"/></svg>');
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .how-it-works-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, #e74c3c, transparent);
+        }
+
+        .step-card:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .step-card h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #e74c3c, #3498db);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        .feature-list li i {
+            color: #27ae60;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Statistics Section */
+        .stats-section {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 6rem 0;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            padding: 2rem 1rem;
+        }
+
+        .stat-item i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #e74c3c, #3498db);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .team-card h4 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-card .role {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .team-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #e74c3c;
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: #3498db;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            line-height: 2;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #bdc3c7;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .mission-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .mission-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .step-card::before {
+                display: none;
+            }
+
+            .features-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .page-header,
+            .mission-container,
+            .how-it-works-container,
+            .features-container,
+            .stats-container,
+            .team-container,
+            .cta-container,
+            .footer-container {
+                padding: 0 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .mission-content h2,
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="login.html" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>About Rural TeleCare</h1>
+            <p>Bridging the healthcare divide through innovative telemedicine solutions designed specifically for rural India</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="mission-container">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p>Rural TeleCare is revolutionizing healthcare delivery in rural India by connecting remote communities with specialist medical care through cutting-edge telemedicine technology.</p>
+                <p>We believe that geographical barriers should never prevent anyone from accessing quality healthcare. Our platform bridges the gap between rural patients and urban medical expertise, ensuring that every village has access to the same level of care available in major cities.</p>
+                
+                <div class="mission-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <h4>Universal Access</h4>
+                            <p>Healthcare for every village in India</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>Government Support</h4>
+                            <p>Backed by Ministry of Health</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h4>Free Service</h4>
+                            <p>No cost for rural communities</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-user-md"></i>
+                        <div>
+                            <h4>Expert Doctors</h4>
+                            <p>Qualified specialist consultants</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-visual">
+                <i class="fas fa-hospital-alt"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="how-it-works-container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Our simple 4-step process ensures every rural patient gets connected to the right specialist doctor</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Visit Health Center</h3>
+                    <p>Patient visits the nearest Rural TeleCare center located within 2-3 villages. Our trained Community Health Officers (CHO) are ready to assist.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Health Assessment</h3>
+                    <p>CHO records vital signs including blood pressure, weight, height, temperature, and discusses symptoms to determine the right specialist.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Doctor Connection</h3>
+                    <p>Patient is connected to the appropriate specialist doctor via secure video call. CHO facilitates the consultation and provides medical history.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Digital Prescription</h3>
+                    <p>Doctor provides consultation, diagnosis, and digital prescription linked to patient's Aadhaar ID for future reference and medical history.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-container">
+            <div class="section-title">
+                <h2>Why Choose Rural TeleCare?</h2>
+                <p>Comprehensive healthcare solutions designed specifically for rural communities</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Advanced Telemedicine</h3>
+                    <p>High-quality video consultations with crystal clear audio and video, ensuring effective doctor-patient communication.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Modern Equipment</li>
+                        <li><i class="fas fa-check-circle"></i> Reliable Infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="section-title">
+                <h2 style="color: white;">Our Impact in Numbers</h2>
+                <p style="color: rgba(255,255,255,0.9);">Transforming rural healthcare across India with measurable results</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3 id="villages-served">500</h3>
+                    <p>Villages Served</p>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-hospital"></i>
+                    <h3 id="health-centers">150</h3>
+                    <p>Health Centers</p>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-user-md"></i>
+                    <h3 id="doctors-network">50</h3>
+                    <p>Specialist Doctors</p>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <h3 id="patients-treated">10000</h3>
+                    <p>Patients Treated</p>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-user-nurse"></i>
+                    <h3 id="cho-staff">300</h3>
+                    <p>CHO Staff</p>
+                </div>
+                
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <h3 id="avg-response">15</h3>
+                    <p>Min Avg Response</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="team-container">
+            <div class="section-title">
+                <h2>Our Expert Team</h2>
+                <p>Dedicated professionals working tirelessly to bring quality healthcare to rural India</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>Dr. Rajesh Kumar</h4>
+                    <div class="role">Chief Medical Officer</div>
+                    <p>Leading rural healthcare initiatives with 20+ years of experience in community medicine and telemedicine implementation across India.</p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. Priya Sharma</h4>
+                    <div class="role">Pediatric Specialist</div>
+                    <p>Specialized in child healthcare with expertise in remote consultations and preventive care for rural children and mothers.</p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-laptop-medical"></i>
+                    </div>
+                    <h4>Amit Patel</h4>
+                    <div class="role">Technology Director</div>
+                    <p>Expert in healthcare technology solutions, ensuring robust and secure telemedicine infrastructure for rural connectivity.</p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                    <h4>Sister Mary Joseph</h4>
+                    <div class="role">CHO Training Head</div>
+                    <p>Leading the training program for Community Health Officers, ensuring quality care and proper telemedicine protocols.</p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Dr. Suresh Reddy</h4>
+                    <div class="role">Cardiology Consultant</div>
+                    <p>Senior cardiologist providing remote heart health consultations and preventive cardiac care guidance to rural patients.</p>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>Dr. Kavita Singh</h4>
+                    <div class="role">Mental Health Specialist</div>
+                    <p>Pioneering mental health support in rural areas through culturally sensitive telemedicine approaches and community outreach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Join the Healthcare Revolution</h2>
+            <p>Be part of India's largest rural telemedicine initiative. Together, we can ensure quality healthcare reaches every village, every family, every individual.</p>
+            <a href="contact.html" class="btn-primary">
+                <i class="fas fa-hands-helping"></i> Get Involved Today
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-heartbeat"></i> Rural TeleCare</h3>
+                <p>Revolutionizing rural healthcare through innovative telemedicine solutions. Making quality healthcare accessible to every corner of India.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="about.html">About Us</a></p>
+                <p><a href="contact.html">Contact</a></p>
+                <p><a href="login.html">System Login</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <p><a href="#">Video Consultations</a></p>
+                <p><a href="#">Health Monitoring</a></p>
+                <p><a href="#">Digital Prescriptions</a></p>
+                <p><a href="#">Medical Records</a></p>
+                <p><a href="#">Emergency Care</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Information</h3>
+                <p><i class="fas fa-phone"></i> Toll Free: 1800-TELECARE</p>
+                <p><i class="fas fa-envelope"></i> info@ruraltelecare.gov.in</p>
+                <p><i class="fas fa-map-marker-alt"></i> Ministry of Health & Family Welfare<br>Government of India, New Delhi</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Rural TeleCare. All rights reserved. | A Government of India Initiative for Universal Healthcare Access</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on links
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = [
+                { element: document.getElementById('villages-served'), target: 500, suffix: '+' },
+                { element: document.getElementById('health-centers'), target: 150, suffix: '+' },
+                { element: document.getElementById('doctors-network'), target: 50, suffix: '+' },
+                { element: document.getElementById('patients-treated'), target: 10000, suffix: '+' },
+                { element: document.getElementById('cho-staff'), target: 300, suffix: '+' },
+                { element: document.getElementById('avg-response'), target: 15, suffix: '' }
+            ];
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        counters.forEach(counter => {
+                            if (entry.target.contains(counter.element)) {
+                                animateCounter(counter.element, counter.target, counter.suffix);
+                            }
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        }
+
+        function animateCounter(element, target, suffix) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString() + suffix;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString() + suffix;
+                }
+            }, 20);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Card animations on scroll
+        function animateCards() {
+            const cards = document.querySelectorAll('.feature-card, .team-card, .step-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            animateCounters();
+            animateCards();
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '#fff';
+                header.style.backdropFilter = 'none';
+            }
+        });
+
+        console.log('📋 About Page Loaded - Rural TeleCare');
+        console.log('🏥 Mission: Bridging Healthcare Divide');
+        console.log('👥 Team: Ready to Serve Rural India');
+    </script>
+</body>

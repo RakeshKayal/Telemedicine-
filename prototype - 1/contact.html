@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #e74c3c, #3498db);
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-info h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .contact-details h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-details a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-form h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            background: #e74c3c;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .emergency-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .emergency-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .emergency-section p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .emergency-number {
+            background: white;
+            color: #e74c3c;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            font-size: 2rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .emergency-number:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Locations Section */
+        .locations-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .locations-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .location-card {
+            background: #f8f9fa;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .location-card:hover {
+            transform: translateY(-10px);
+            border-color: #e74c3c;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .location-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 2rem;
+        }
+
+        .location-card h3 {
+            font-size: 1.6rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .location-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .location-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 1.5rem;
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .stat-item span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f8f9fa;
+        }
+
+        .faq-question i {
+            color: #e74c3c;
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 2rem 2rem;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: #3498db;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            line-height: 2;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #bdc3c7;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .location-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .emergency-number {
+                font-size: 1.5rem;
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .page-header,
+            .contact-container,
+            .emergency-container,
+            .locations-container,
+            .faq-container,
+            .footer-container {
+                padding: 0 1rem;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: #27ae60;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <a href="login.html" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Contact Rural TeleCare</h1>
+            <p>Get in touch with us for healthcare support, center locations, or partnership opportunities</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Get In Touch</h2>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Emergency Helpline</h3>
+                        <p><strong><a href="tel:1800TELECARE">1800-TELECARE</a></strong></p>
+                        <p>Available 24/7 for medical emergencies and urgent consultations</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Email Support</h3>
+                        <p><strong><a href="mailto:info@ruraltelecare.gov.in">info@ruraltelecare.gov.in</a></strong></p>
+                        <p>For general inquiries, feedback, and support requests</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Head Office</h3>
+                        <p><strong>Ministry of Health & Family Welfare</strong></p>
+                        <p>Nirman Bhavan, New Delhi - 110011<br>Government of India</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Service Hours</h3>
+                        <p><strong>Health Centers:</strong> 6:00 AM - 10:00 PM</p>
+                        <p><strong>Emergency:</strong> 24/7 Available</p>
+                        <p><strong>Admin Support:</strong> 9:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Send Us a Message</h2>
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully. We'll get back to you soon.
+                </div>
+                
+                <form id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="medical">Medical Support</option>
+                            <option value="technical">Technical Issue</option>
+                            <option value="center">Find Health Center</option>
+                            <option value="partnership">Partnership Opportunity</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="village">Village/Location</label>
+                        <input type="text" id="village" name="village" placeholder="Enter your village or city name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required placeholder="Please describe how we can help you..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Section -->
+    <section class="emergency-section">
+        <div class="emergency-container">
+            <h2><i class="fas fa-exclamation-triangle"></i> Medical Emergency?</h2>
+            <p>For immediate medical assistance and emergency consultations, call our 24/7 helpline</p>
+            <a href="tel:1800TELECARE" class="emergency-number">
+                <i class="fas fa-phone"></i> 1800-TELECARE
+            </a>
+            <p><strong>Free from all mobile and landline numbers across India</strong></p>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section class="locations-section">
+        <div class="locations-container">
+            <div class="section-title">
+                <h2>Find Your Nearest Center</h2>
+                <p>Our health centers are strategically located to serve rural communities across India</p>
+            </div>
+            
+            <div class="locations-grid">
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>North India Region</h3>
+                    <p>Serving Punjab, Haryana, Himachal Pradesh, Uttarakhand, and rural areas of Delhi NCR with comprehensive telemedicine services.</p>
+                    <div class="location-stats">
+                        <div class="stat-item">
+                            <strong>45</strong>
+                            <span>Centers</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>180</strong>
+                            <span>Villages</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>15</strong>
+                            <span>Doctors</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>South India Region</h3>
+                    <p>Covering Tamil Nadu, Karnataka, Andhra Pradesh, Telangana, and Kerala with specialized rural healthcare solutions.</p>
+                    <div class="location-stats">
+                        <div class="stat-item">
+                            <strong>38</strong>
+                            <span>Centers</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>150</strong>
+                            <span>Villages</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>12</strong>
+                            <span>Doctors</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>East India Region</h3>
+                    <p>Providing healthcare access to West Bengal, Odisha, Jharkhand, and parts of Bihar through advanced telemedicine.</p>
+                    <div class="location-stats">
+                        <div class="stat-item">
+                            <strong>35</strong>
+                            <span>Centers</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>140</strong>
+                            <span>Villages</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>11</strong>
+                            <span>Doctors</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>West India Region</h3>
+                    <p>Serving Maharashtra, Gujarat, Rajasthan, and Madhya Pradesh with culturally sensitive healthcare delivery.</p>
+                    <div class="location-stats">
+                        <div class="stat-item">
+                            <strong>32</strong>
+                            <span>Centers</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>130</strong>
+                            <span>Villages</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>12</strong>
+                            <span>Doctors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about our telemedicine services</p>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How do I find my nearest Rural TeleCare center?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>You can contact our helpline at 1800-TELECARE or visit our website to locate the nearest center. Our centers are strategically placed to serve 2-3 villages within walking distance.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Is the telemedicine service really free?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, all our telemedicine services are completely free for rural communities. This initiative is funded by the Government of India and charitable donations to ensure healthcare accessibility for all.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What documents do I need for consultation?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>You need to bring your Aadhaar card for patient ID linking, and any previous medical reports or prescriptions. Our CHO will help register you and maintain your digital medical records.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What types of medical conditions can be treated?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Our specialist doctors can consult on general medicine, pediatrics, cardiology, dermatology, mental health, and many other specialties. For emergencies, we provide immediate support and referrals.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How do I get my digital prescription?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>After consultation, the doctor will create a digital prescription linked to your Aadhaar ID. You can access it anytime through our system or get a printed copy from the health center.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Can I access my medical history later?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, all your medical consultations, prescriptions, and health records are securely stored and linked to your Aadhaar ID. You can access them at any Rural TeleCare center across India.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-heartbeat"></i> Rural TeleCare</h3>
+                <p>Making quality healthcare accessible to every village in India through innovative telemedicine solutions and dedicated community service.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="about.html">About Us</a></p>
+                <p><a href="contact.html">Contact</a></p>
+                <p><a href="login.html">System Login</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Emergency Support</h3>
+                <p><a href="tel:1800TELECARE">1800-TELECARE (24/7)</a></p>
+                <p><a href="mailto:emergency@ruraltelecare.gov.in">emergency@ruraltelecare.gov.in</a></p>
+                <p><a href="mailto:support@ruraltelecare.gov.in">support@ruraltelecare.gov.in</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Government Links</h3>
+                <p><a href="#">Ministry of Health</a></p>
+                <p><a href="#">Digital India</a></p>
+                <p><a href="#">Ayushman Bharat</a></p>
+                <p><a href="#">PMJAY Portal</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Rural TeleCare. All rights reserved. | A Government of India Initiative for Universal Healthcare Access</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on links
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't already active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Contact Form Handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            
+            // Simulate form submission delay
+            setTimeout(() => {
+                // Hide loading
+                document.getElementById('loading').classList.remove('show');
+                
+                // Show success message
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Reset form
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.remove('show');
+                }, 5000);
+                
+            }, 2000);
+        });
+
+        // Form validation enhancement
+        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+        
+        requiredFields.forEach(field => {
+            field.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.style.borderColor = '#e74c3c';
+                } else {
+                    this.style.borderColor = '#27ae60';
+                }
+            });
+
+            field.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    this.style.borderColor = '#27ae60';
+                }
+            });
+        });
+
+        // Email validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailPattern.test(this.value)) {
+                this.style.borderColor = '#e74c3c';
+                this.setCustomValidity('Please enter a valid email address');
+            } else {
+                this.style.borderColor = '#27ae60';
+                this.setCustomValidity('');
+            }
+        });
+
+        // Phone number validation
+        document.getElementById('phone').addEventListener('input', function() {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/\D/g, '');
+            // Limit to 10 digits
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        // Animate cards on scroll
+        function animateCards() {
+            const cards = document.querySelectorAll('.location-card, .contact-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            animateCards();
+        });
+
+        console.log('📞 Contact Page Loaded - Rural TeleCare');
+        console.log('📧 Ready to receive messages');
+        console.log('🚑 Emergency line: 1800-TELECARE');
+    </script>
+</body>
+</html>

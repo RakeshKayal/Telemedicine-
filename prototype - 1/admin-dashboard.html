@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Dashboard Stats */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.centers { border-left-color: #3498db; }
+        .stat-card.doctors { border-left-color: #27ae60; }
+        .stat-card.cho { border-left-color: #f39c12; }
+        .stat-card.patients { border-left-color: #e74c3c; }
+        .stat-card.consultations { border-left-color: #9b59b6; }
+        .stat-card.system { border-left-color: #1abc9c; }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card.centers .stat-icon { background: #3498db; }
+        .stat-card.doctors .stat-icon { background: #27ae60; }
+        .stat-card.cho .stat-icon { background: #f39c12; }
+        .stat-card.patients .stat-icon { background: #e74c3c; }
+        .stat-card.consultations .stat-icon { background: #9b59b6; }
+        .stat-card.system .stat-icon { background: #1abc9c; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .stat-change.positive { color: #27ae60; }
+        .stat-change.negative { color: #e74c3c; }
+
+        /* Management Sections */
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .management-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .management-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .management-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .management-header h3 {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .management-body {
+            padding: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .avatar-cho { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .avatar-doctor { background: linear-gradient(135deg, #27ae60, #229954); }
+
+        .user-details h4 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .btn-reset {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #e67e22;
+        }
+
+        /* Analytics Section */
+        .analytics-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-header h3 {
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* System Status */
+        .system-status {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #333;
+        }
+
+        .status-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-online { background: #27ae60; }
+        .status-offline { background: #e74c3c; }
+        .status-warning { background: #f39c12; }
+
+        .status-value {
+            font-weight: bold;
+            color: #666;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f8f9fa;
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+
+        /* Reports Section */
+        .reports-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .report-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .report-card:hover {
+            background: #e9ecef;
+            transform: translateY(-3px);
+        }
+
+        .report-icon {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .report-title {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success { border-left-color: #27ae60; }
+        .notification.error { border-left-color: #e74c3c; }
+        .notification.info { border-left-color: #3498db; }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .notification.success .notification-icon { background: #27ae60; }
+        .notification.error .notification-icon { background: #e74c3c; }
+        .notification.info .notification-icon { background: #3498db; }
+
+        .notification-text h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .notification-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-section {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+
+            .time-filter {
+                flex-wrap: wrap;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="adminName">System Administrator</h3>
+                        <p id="adminDepartment">IT Operations</p>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Stats -->
+        <section class="stats-section">
+            <div class="stat-card centers">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalCenters">150</div>
+                        <div class="stat-label">Health Centers</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +5 this month
+                </div>
+            </div>
+
+            <div class="stat-card doctors">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalDoctors">85</div>
+                        <div class="stat-label">Active Doctors</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +8 this month
+                </div>
+            </div>
+
+            <div class="stat-card cho">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalCHO">320</div>
+                        <div class="stat-label">CHO Staff</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +12 this month
+                </div>
+            </div>
+
+            <div class="stat-card patients">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalPatients">15847</div>
+                        <div class="stat-label">Total Patients</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +456 this month
+                </div>
+            </div>
+
+            <div class="stat-card consultations">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalConsultations">8924</div>
+                        <div class="stat-label">Consultations</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +15% vs last month
+                </div>
+            </div>
+
+            <div class="stat-card system">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number">99.8%</div>
+                        <div class="stat-label">System Uptime</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-check-circle"></i> Excellent performance
+                </div>
+            </div>
+        </section>
+
+        <!-- User Management -->
+        <section class="management-grid">
+            <div class="management-card">
+                <div class="management-header">
+                    <h3><i class="fas fa-user-nurse"></i> CHO Management</h3>
+                    <button class="add-btn" onclick="openModal('addCHOModal')">
+                        <i class="fas fa-plus"></i> Add CHO
+                    </button>
+                </div>
+                <div class="management-body">
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-cho">
+                                <i class="fas fa-user-nurse"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>Ramesh Kumar</h4>
+                                <p>Block A Center | ID: CHO001</p>
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-cho">
+                                <i class="fas fa-user-nurse"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>Priya Sharma</h4>
+                                <p>Block B Center | ID: CHO002</p>
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-cho">
+                                <i class="fas fa-user-nurse"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>Suresh Patel</h4>
+                                <p>Block C Center | ID: CHO003</p>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+
+            <div class="management-card">
+                <div class="management-header">
+                    <h3><i class="fas fa-user-md"></i> Doctor Management</h3>
+                    <button class="add-btn" onclick="openModal('addDoctorModal')">
+                        <i class="fas fa-plus"></i> Add Doctor
+                    </button>
+                </div>
+                <div class="managementd-body">
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                          
+                        </div>
+                       
+                    </div>
+
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar-small avatar-doctor">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                           
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section class="analytics-section">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-line"></i> Consultation Analytics</h3>
+                    <div class="time-filter">
+                        <button class="filter-btn active" onclick="filterChart('week')">Week</button>
+                        <button class="filter-btn" onclick="filterChart('month')">Month</button>
+                        <button class="filter-btn" onclick="filterChart('quarter')">Quarter</button>
+                        <button class="filter-btn" onclick="filterChart('year')">Year</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <div>
+                        <i class="fas fa-chart-area" style="font-size: 3rem; margin-bottom: 1rem; color: #3498db;"></i>
+                        <div>Interactive Analytics Dashboard</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
+                            Real-time consultation trends and usage patterns
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <h3 style="color: #333; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-server"></i> System Status
+                </h3>
+                
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-online"></div>
+                        Web Application
+                    </div>
+                    <div class="status-value">Online</div>
+                </div>
+
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-online"></div>
+                        Database Server
+                    </div>
+                    <div class="status-value">Online</div>
+                </div>
+
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-online"></div>
+                        Video Services
+                    </div>
+                    <div class="status-value">Online</div>
+                </div>
+
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-warning"></div>
+                        Storage Usage
+                    </div>
+                    <div class="status-value">78%</div>
+                </div>
+
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-online"></div>
+                        Network
+                    </div>
+                    <div class="status-value">Stable</div>
+                </div>
+
+                <div class="status-item">
+                    <div class="status-label">
+                        <div class="status-icon status-online"></div>
+                        Backup System
+                    </div>
+                    <div class="status-value">Active</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section class="reports-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-chart-bar"></i>
+                    System Reports
+                </h2>
+                <button class="export-btn" onclick="exportAllReports()">
+                    <i class="fas fa-download"></i> Export Reports
+                </button>
+            </div>
+            <div class="reports-grid">
+                <div class="report-card" onclick="generateReport('usage')">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="report-title">Usage Analytics</div>
+                    <div class="report-description">Center utilization and consultation patterns</div>
+                </div>
+
+                <div class="report-card" onclick="generateReport('performance')">
+                    <div class="report-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="report-title">Performance Report</div>
+                    <div class="report-description">System performance and response times</div>
+                </div>
+
+                <div class="report-card" onclick="generateReport('users')">
+                    <div class="report-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="report-title">User Activity</div>
+                    <div class="report-description">CHO and Doctor activity statistics</div>
+                </div>
+
+                <div class="report-card" onclick="generateReport('patients')">
+                    <div class="report-icon">
+                        <i class="fas fa-user-injured"></i>
+                    </div>
+                    <div class="report-title">Patient Demographics</div>
+                    <div class="report-description">Patient registration and consultation data</div>
+                </div>
+
+                <div class="report-card" onclick="generateReport('financial')">
+                    <div class="report-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="report-title">Cost Analysis</div>
+                    <div class="report-description">Operational costs and savings report</div>
+                </div>
+
+                <div class="report-card" onclick="generateReport('quality')">
+                    <div class="report-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="report-title">Quality Metrics</div>
+                    <div class="report-description">Service quality and patient satisfaction</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add CHO Modal -->
+    <div id="addCHOModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New CHO</h3>
+                <button class="close-btn" onclick="closeModal('addCHOModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addCHOForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="choName">Full Name *</label>
+                            <input type="text" id="choName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="choEmail">Email Address *</label>
+                            <input type="email" id="choEmail" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="choPhone">Phone Number *</label>
+                            <input type="tel" id="choPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="choQualification">Qualification *</label>
+                            <input type="text" id="choQualification" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="choCenter">Assigned Health Center *</label>
+                        <select id="choCenter" required>
+                            <option value="">Select health center...</option>
+                            <option value="center001">Village Health Center - Block A</option>
+                            <option value="center002">Village Health Center - Block B</option>
+                            <option value="center003">Village Health Center - Block C</option>
+                            <option value="center004">Village Health Center - Block D</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="choUserId">User ID *</label>
+                            <input type="text" id="choUserId" required placeholder="CHO004">
+                        </div>
+                        <div class="form-group">
+                            <label for="choPassword">Password *</label>
+                            <input type="password" id="choPassword" required minlength="6">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="choAddress">Address</label>
+                        <textarea id="choAddress" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Add CHO
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div id="addDoctorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-md"></i> Add New Doctor</h3>
+                <button class="close-btn" onclick="closeModal('addDoctorModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addDoctorForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doctorName">Full Name *</label>
+                            <input type="text" id="doctorName" required placeholder="Dr. John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="doctorEmail">Email Address *</label>
+                            <input type="email" id="doctorEmail" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doctorPhone">Phone Number *</label>
+                            <input type="tel" id="doctorPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="doctorSpecialty">Medical Specialty *</label>
+                            <select id="doctorSpecialty" required>
+                                <option value="">Select specialty...</option>
+                                <option value="general">General Medicine</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="cardiology">Cardiology</option>
+                                <option value="dermatology">Dermatology</option>
+                                <option value="gynecology">Gynecology</option>
+                                <option value="orthopedics">Orthopedics</option>
+                                <option value="psychiatry">Psychiatry</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                              <div class="form-group">
+                            <label for="doctorAbailableFrom">Abailable From *</label>
+                            <input type="time" id="doctorAbailableFrom" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="doctorAbailableTo">Abailable To *</label>
+                            <input type="time" id="doctorAbailableTo" required>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doctorExperience">Years of Experience *</label>
+                            <input type="number" id="doctorExperience" required min="1" max="50">
+                        </div>
+                       
+                    </div>
+                    <div class="form-row">
+                        
+                        <div class="form-group">
+                            <label for="doctorPassword">Password *</label>
+                            <input type="password" id="doctorPassword" required minlength="6">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorMeetLink">Google Meet Link</label>
+                        <input type="url" id="doctorMeetLink" placeholder="https://meet.google.com/abc-defg-hij">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorBio">Professional Bio</label>
+                        <textarea id="doctorBio" rows="3" placeholder="Brief professional background..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Add Doctor
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit User</h3>
+                <button class="close-btn" onclick="closeModal('editUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="editUserContent">
+                    <!-- Content will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Settings Modal -->
+    <div id="systemSettingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> System Settings</h3>
+                <button class="close-btn" onclick="closeModal('systemSettingsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="systemSettingsForm">
+                    <div class="form-group">
+                        <label for="systemName">System Name</label>
+                        <input type="text" id="systemName" value="Rural TeleCare">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="maxConcurrentUsers">Max Concurrent Users</label>
+                            <input type="number" id="maxConcurrentUsers" value="500">
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionTimeout">Session Timeout (minutes)</label>
+                            <input type="number" id="sessionTimeout" value="30">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maintenanceMode">
+                            <input type="checkbox" id="maintenanceMode">
+                            Maintenance Mode
+                        </label>
+                        <small style="color: #666;">Enable to temporarily disable user access</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="backupFrequency">Backup Frequency</label>
+                        <select id="backupFrequency">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i id="notificationIcon" class="fas fa-check"></i>
+            </div>
+            <div class="notification-text">
+                <h4 id="notificationTitle">Success</h4>
+                <p id="notificationMessage">Operation completed successfully!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthentication();
+            loadUserData();
+            initializeCharts();
+        });
+
+        // Check if user is authenticated
+        function checkAuthentication() {
+            const userRole = sessionStorage.getItem('userRole');
+            if (userRole !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
+        // Load user data
+        function loadUserData() {
+            const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
+            if (userData.name) {
+                document.getElementById('adminName').textContent = userData.name;
+                document.getElementById('adminDepartment').textContent = userData.department;
+            }
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            console.log('Charts initialized - In a real app, this would load Chart.js or D3.js visualizations');
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Notification system
+        function showNotification(type, title, message) {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const titleEl = document.getElementById('notificationTitle');
+            const messageEl = document.getElementById('notificationMessage');
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                success: 'fas fa-check',
+                error: 'fas fa-times',
+                info: 'fas fa-info'
+            };
+            icon.className = icons[type] || 'fas fa-info';
+
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Add CHO Form
+        document.getElementById('addCHOForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const choName = document.getElementById('choName').value;
+            const userId = document.getElementById('choUserId').value;
+            
+            showNotification('success', 'CHO Added', `${choName} has been successfully added with User ID: ${userId}`);
+            closeModal('addCHOModal');
+            e.target.reset();
+            
+            // Update stats
+            const totalCHO = document.getElementById('totalCHO');
+            totalCHO.textContent = parseInt(totalCHO.textContent) + 1;
+        });
+//load the doctor
+
+async function loadDoctors() {
+    try {
+        const response = await fetch("http://localhost:8020/api/v1/doctor/get");
+        if (!response.ok) throw new Error("Failed to fetch doctors");
+
+        const doctors = await response.json();
+
+        const container = document.querySelector(".managementd-body");
+        container.innerHTML = ""; // clear old data
+
+        doctors.forEach(d => {
+            const div = document.createElement("div");
+            div.classList.add("user-item");
+            div.innerHTML = `
+                <div class="user-info">
+                    <div class="user-avatar-small avatar-doctor">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div>
+                        <strong>${d.name}</strong><br>
+                        <small>${d.specialization || "No specialization"}</small><br>
+                        <small>${d.email}</small>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    } catch (err) {
+        console.error("Error loading doctors:", err);
+        showNotification("error", "Failed", "Could not load doctors.");
+    }
+}
+
+// ✅ Load doctors when page loads
+window.addEventListener("DOMContentLoaded", loadDoctors);
+
+// ✅ Refresh after adding a new doctor
+async function addDoctorSuccess() {
+    await loadDoctors();
+}
+
+        // Add Doctor Form
+       // Add Doctor Form Submit Handler
+document.getElementById('addDoctorForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Collect form data
+    const doctor = {
+        name: document.getElementById('doctorName').value,
+        email: document.getElementById('doctorEmail').value,
+        mobileNo: document.getElementById('doctorPhone').value,
+        specialization: document.getElementById('doctorSpecialty').value,
+        yearOfExperience: parseInt(document.getElementById('doctorExperience').value),
+        password: document.getElementById('doctorPassword').value,
+        googleMeetLink: document.getElementById('doctorMeetLink').value || null,
+        availableFrom:document.getElementById('doctorAbailableFrom').value ,
+        availableTo:document.getElementById('doctorAbailableTo').value ,
+        // Note: UserId & License not in your entity → skip or handle separately
+    };
+
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/doctor/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(doctor)
+        });
+
+        if (response.ok) {
+            const result = await response.text();
+            showNotification('success', 'Doctor Added', result);
+            
+            // Close modal & reset form
+            closeModal('addDoctorModal');
+            e.target.reset();
+loadDoctors();
+            // Update stats (if element exists)
+            const totalDoctors = document.getElementById('totalDoctors');
+            if (totalDoctors) {
+                totalDoctors.textContent = parseInt(totalDoctors.textContent) + 1;
+            }
+        } else {
+            const errorMsg = await response.text();
+            showNotification('error', 'Failed', errorMsg);
+        }
+    } catch (err) {
+        console.error("Error saving doctor:", err);
+        showNotification('error', 'Server Error', 'Could not connect to server.');
+    }
+});
+
+
+        // Edit User
+        function editUser(userId) {
+            const userTypes = {
+                'CHO001': { name: 'Ramesh Kumar', type: 'CHO', details: 'Block A Center' },
+                'DOC001': { name: 'Dr. Rajesh Kumar', type: 'Doctor', details: 'General Medicine' }
+            };
+            
+            const user = userTypes[userId];
+            if (user) {
+                document.getElementById('editUserContent').innerHTML = `
+                    <form id="editUserForm">
+                        <div class="form-group">
+                            <label>User ID</label>
+                            <input type="text" value="${userId}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" value="${user.name}">
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <input type="text" value="${user.type}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Details</label>
+                            <input type="text" value="${user.details}">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select>
+                                <option value="active" selected>Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i> Update User
+                        </button>
+                    </form>
+                `;
+                
+                document.getElementById('editUserForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showNotification('success', 'User Updated', `${user.name} profile has been updated successfully.`);
+                    closeModal('editUserModal');
+                });
+                
+                openModal('editUserModal');
+            }
+        }
+
+        // Reset Password
+        function resetPassword(userId) {
+            if (confirm(`Are you sure you want to reset the password for ${userId}?`)) {
+                showNotification('success', 'Password Reset', `Password has been reset for ${userId}. New credentials sent via email.`);
+            }
+        }
+
+        // Chart Filter
+        function filterChart(period) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            showNotification('info', 'Chart Updated', `Analytics filtered for ${period} view.`);
+        }
+
+        // Generate Reports
+        function generateReport(type) {
+            const reportTypes = {
+                usage: 'Usage Analytics Report',
+                performance: 'Performance Report',
+                users: 'User Activity Report',
+                patients: 'Patient Demographics Report',
+                financial: 'Cost Analysis Report',
+                quality: 'Quality Metrics Report'
+            };
+            
+            showNotification('info', 'Report Generated', `${reportTypes[type]} is being generated and will be available shortly.`);
+        }
+
+        // Export All Reports
+        function exportAllReports() {
+            showNotification('success', 'Export Started', 'All reports are being compiled and will be downloaded shortly.');
+        }
+
+        // System Settings
+        function openSystemSettings() {
+            openModal('systemSettingsModal');
+        }
+
+        document.getElementById('systemSettingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('success', 'Settings Saved', 'System settings have been updated successfully.');
+            closeModal('systemSettingsModal');
+        });
+
+        // Auto-refresh stats every 30 seconds
+        setInterval(() => {
+            console.log('Refreshing admin dashboard stats...');
+            // In a real application, this would fetch updated data from the server
+        }, 30000);
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.clear();
+                localStorage.removeItem('rememberedUser');
+                localStorage.removeItem('rememberedRole');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Add keyboard shortcuts for admin functions
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case 'n':
+                        e.preventDefault();
+                        openModal('addCHOModal');
+                        break;
+                    case 'm':
+                        e.preventDefault();
+                        openModal('addDoctorModal');
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        openSystemSettings();
+                        break;
+                }
+            }
+        });
+
+        // Add some interactive feedback
+        document.querySelectorAll('.management-card, .report-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Simulate real-time updates
+        function simulateRealTimeUpdates() {
+            setInterval(() => {
+                // Randomly update consultation count
+                const consultations = document.getElementById('totalConsultations');
+                if (Math.random() > 0.8) {
+                    consultations.textContent = parseInt(consultations.textContent) + Math.floor(Math.random() * 3) + 1;
+                }
+            }, 10000);
+        }
+
+        // Initialize real-time updates
+        simulateRealTimeUpdates();
+
+        console.log('🔧 Admin Dashboard Loaded Successfully');
+        console.log('👑 System Administration Portal Active');
+        console.log('📊 Management Tools: Ready');
+        console.log('⚙️ System Status: Monitoring');
+
+        // Welcome message for admin
+        setTimeout(() => {
+            showNotification('info', 'Welcome Administrator', 'Rural TeleCare Admin Dashboard loaded successfully. All systems operational.');
+        }, 1500);
+    </script>
+</body>
+</html>

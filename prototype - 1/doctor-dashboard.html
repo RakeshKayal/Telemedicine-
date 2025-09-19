@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Dashboard Stats */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.pending { border-left-color: #f39c12; }
+        .stat-card.today { border-left-color: #27ae60; }
+        .stat-card.completed { border-left-color: #3498db; }
+        .stat-card.patients { border-left-color: #9b59b6; }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card.pending .stat-icon { background: #f39c12; }
+        .stat-card.today .stat-icon { background: #27ae60; }
+        .stat-card.completed .stat-icon { background: #3498db; }
+        .stat-card.patients .stat-icon { background: #9b59b6; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .stat-change.positive { color: #27ae60; }
+        .stat-change.negative { color: #e74c3c; }
+
+        /* Quick Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .actions-main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1);
+        }
+
+        .action-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .action-card p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Info Panel */
+        .quick-info {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quick-info-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .quick-info-header h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-info-body {
+            padding: 1.5rem;
+        }
+
+        .meet-link-section {
+            margin-bottom: 2rem;
+        }
+
+        .meet-link {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .meet-link a {
+            color: #3498db;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .update-link-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .quick-stat {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .quick-stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .quick-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Assigned Patients Section */
+        .patients-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-all {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .view-all:hover {
+            color: #2980b9;
+        }
+
+        .patients-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .patient-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background 0.3s;
+        }
+
+        .patient-item:hover {
+            background: #f8f9fa;
+        }
+
+        .patient-item:last-child {
+            border-bottom: none;
+        }
+
+        .patient-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .patient-details {
+            flex: 1;
+        }
+
+        .patient-name {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .patient-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .patient-condition {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .patient-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .status-urgent {
+            background: #fee;
+            color: #e74c3c;
+        }
+
+        .status-routine {
+            background: #eef9ff;
+            color: #3498db;
+        }
+
+        .status-scheduled {
+            background: #eaf4f4;
+            color: #27ae60;
+        }
+
+        .patient-time {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .patient-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-accept {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background: #229954;
+        }
+
+        .btn-view {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #2980b9;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f8f9fa;
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+
+        /* Consultation Room */
+        .consultation-room {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-section {
+            background: #000;
+            border-radius: 15px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder {
+            text-align: center;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .control-btn.mute {
+            background: #34495e;
+            color: white;
+        }
+
+        .control-btn.video {
+            background: #34495e;
+            color: white;
+        }
+
+        .control-btn.end {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .patient-info-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .info-section h4 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success { border-left-color: #27ae60; }
+        .notification.error { border-left-color: #e74c3c; }
+        .notification.info { border-left-color: #3498db; }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .notification.success .notification-icon { background: #27ae60; }
+        .notification.error .notification-icon { background: #e74c3c; }
+        .notification.info .notification-icon { background: #3498db; }
+
+        .notification-text h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .notification-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-main {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .consultation-room {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card,
+            .action-card {
+                padding: 1.5rem;
+            }
+
+            .action-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .patient-item {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="doctorName">Dr. Rajesh Kumar</h3>
+                        <p id="doctorSpecialty">General Medicine</p>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Stats -->
+        <section class="stats-section">
+            <div class="stat-card pending">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="pendingConsultations">5</div>
+                        <div class="stat-label">Pending Requests</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-change negative">
+                    <i class="fas fa-exclamation-triangle"></i> Requires attention
+                </div>
+            </div>
+
+            <div class="stat-card today">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="todayConsultations">8</div>
+                        <div class="stat-label">Today's Consultations</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 3 completed
+                </div>
+            </div>
+
+            <div class="stat-card completed">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="monthlyConsultations">156</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +12% vs last month
+                </div>
+            </div>
+
+            <div class="stat-card patients">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalPatients">342</div>
+                        <div class="stat-label">Total Patients</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +18 this month
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions & Info -->
+        <section class="actions-grid">
+            <div class="actions-main">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Start Consultation</h3>
+                    <p>Begin video consultation with assigned patients via Google Meet integration.</p>
+                    <button class="action-btn" onclick="startConsultation()">
+                        <i class="fas fa-play"></i> Start Meeting
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h3>Patient History</h3>
+                    <p>Access comprehensive medical records and consultation history.</p>
+                    <button class="action-btn" onclick="openModal('patientHistoryModal')">
+                        <i class="fas fa-history"></i> View History
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-prescription"></i>
+                    </div>
+                    <h3>Write Prescription</h3>
+                    <p>Create digital prescriptions linked to patient medical records.</p>
+                    <button class="action-btn" onclick="openModal('prescriptionModal')">
+                        <i class="fas fa-edit"></i> New Prescription
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3>Upload Reports</h3>
+                    <p>Upload consultation reports and medical documents for patients.</p>
+                    <button class="action-btn" onclick="openModal('uploadReportsModal')">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Files
+                    </button>
+                </div>
+            </div>
+
+            <div class="quick-info">
+                <div class="quick-info-header">
+                    <h3><i class="fas fa-info-circle"></i> Quick Info</h3>
+                    <p>Your consultation portal</p>
+                </div>
+                <div class="quick-info-body">
+                    <div class="meet-link-section">
+                        <h4 style="color: #333; margin-bottom: 1rem;">Your Google Meet Link</h4>
+                        <div class="meet-link">
+                            <i class="fas fa-video" style="color: #27ae60; margin-bottom: 0.5rem;"></i><br>
+                            <a href="https://meet.google.com/abc-defg-hij" target="_blank" id="doctorMeetLink">
+                                meet.google.com/abc-defg-hij
+                            </a>
+                        </div>
+                        <button class="update-link-btn" onclick="updateMeetLink()">
+                            <i class="fas fa-edit"></i> Update Link
+                        </button>
+                    </div>
+
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-number">15</div>
+                            <div class="quick-stat-label">Avg. Daily</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-number">4.8</div>
+                            <div class="quick-stat-label">Rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assigned Patients -->
+        <section class="patients-section">
+    <div class="section-header">
+        <h2>
+            <i class="fas fa-user-injured"></i>
+            Assigned Patients
+        </h2>
+        <a href="#" class="view-all">View All</a>
+    </div>
+    <div class="patients-list" id="patientsList">
+        <!-- JS will inject patient cards here dynamically -->
+        <p>Loading patients...</p>
+    </div>
+</section>
+
+
+    <!-- Patient History Modal -->
+    <div id="patientHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-medical"></i> Patient Medical History</h3>
+                <button class="close-btn" onclick="closeModal('patientHistoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="patientSearch">Search Patient</label>
+                    <select id="patientSearch" onchange="loadDoctorPatientHistory()">
+                        <option value="">Select a patient...</option>
+                        <option value="P001">Sita Devi (P001) - Hypertension</option>
+                        <option value="P002">Ram Singh (P002) - Diabetes</option>
+                        <option value="P003">Meera Sharma (P003) - General</option>
+                        <option value="P004">Ravi Kumar (P004) - Pediatric</option>
+                        <option value="P005">Lakshmi Devi (P005) - Arthritis</option>
+                    </select>
+                </div>
+                <div id="doctorPatientHistoryContent" style="display: none;">
+                    <!-- Patient history content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescription Modal -->
+    <div id="prescriptionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-prescription"></i> Digital Prescription</h3>
+                <button class="close-btn" onclick="closeModal('prescriptionModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="prescriptionForm">
+                    <div class="form-group">
+                        <label for="prescriptionPatient">Patient *</label>
+                        <select id="prescriptionPatient" required>
+                            <option value="">Select patient...</option>
+                            <option value="P001">Sita Devi (P001) - Hypertension</option>
+                            <option value="P002">Ram Singh (P002) - Diabetes</option>
+                            <option value="P003">Meera Sharma (P003) - General</option>
+                            <option value="P004">Ravi Kumar (P004) - Pediatric</option>
+                            <option value="P005">Lakshmi Devi (P005) - Arthritis</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="diagnosis">Diagnosis *</label>
+                            <input type="text" id="diagnosis" required placeholder="Primary diagnosis">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  <script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const nameEl = document.getElementById("doctorName");
+    const specialtyEl = document.getElementById("doctorSpecialty");
+
+    const doctorName = localStorage.getItem("doctorName");
+    const doctorSpecialty = localStorage.getItem("doctorSpecialty");
+    const docId = localStorage.getItem("doctorId"); // ✅ doctorId must be stored in localStorage
+
+    if (doctorName) nameEl.textContent = `Dr. ${doctorName}`;
+    if (doctorSpecialty) specialtyEl.textContent = doctorSpecialty;
+
+    // Update Google Meet link dynamically
+    const doctorLink = localStorage.getItem('doctorLink');
+    if (doctorLink) {
+        const meetLink = document.getElementById('doctorMeetLink');
+        meetLink.href = doctorLink;
+        meetLink.textContent = doctorLink;
+    }
+
+    // Load assigned patients dynamically
+    if (docId) {
+        try {
+            const response = await fetch(`http://localhost:8020/api/v1/doctor/patient/${docId}`);
+            if (!response.ok) throw new Error("Failed to fetch patients");
+
+            const patients = await response.json();
+            renderPatients(patients);
+        } catch (err) {
+            console.error("Error loading patients:", err);
+            document.getElementById("patientsList").innerHTML = `<p>Error loading patients: ${err.message}</p>`;
+        }
+    }
+
+    // Logout button
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "login.html";
+    });
+});
+
+function renderPatients(patients) {
+    const container = document.getElementById("patientsList");
+    container.innerHTML = ""; // clear old list
+
+    if (!patients || patients.length === 0) {
+        container.innerHTML = "<p>No patients assigned today.</p>";
+        return;
+    }
+
+    patients.forEach(patient => {
+        const status = patient.status ? patient.status.toUpperCase() : "SCHEDULED";
+        const scheduledTime = patient.scheduledAt ? new Date(patient.scheduledAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
+
+        let statusBadge = "";
+        if (status === "COMPLETED") {
+            statusBadge = `<div class="status-badge status-completed">Completed</div>`;
+        } else {
+            statusBadge = `<div class="status-badge status-scheduled">Scheduled - ${scheduledTime}</div>`;
+        }
+
+        const div = document.createElement("div");
+        div.classList.add("patient-item");
+        div.innerHTML = `
+            <div class="patient-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="patient-details">
+                <div class="patient-name">${patient.patientName}</div>
+                 <div class="patient-name">Age :${patient.patientAge}</div>
+                <div class="patient-info">ID: ${patient.patientId} | Mobile: ${patient.patientMobile}</div>
+                <div class="patient-condition">${patient.patientSymptomp || "No symptom provided"}</div>
+            </div>
+            <div class="patient-status">
+                ${statusBadge}
+                <div class="patient-actions">
+                    ${status !== "COMPLETED" ? `<button class="btn-small btn-accept" onclick="acceptConsultation('${patient.patientId}')">Accept</button>` : ""}
+                    <button class="btn-small btn-view" onclick="viewPatientDetails('${patient.patientId}')">View</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Dummy functions (replace with real logic)
+function acceptConsultation(patientId) {
+    alert("Accepted consultation for " + patientId);
+}
+function viewPatientDetails(patientId) {
+    alert("Viewing details for " + patientId);
+}
+</script>
+
+
+</body>
+</html>    

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><circle fill="rgba(255,255,255,0.05)" cx="200" cy="200" r="100"/><circle fill="rgba(255,255,255,0.03)" cx="800" cy="400" r="150"/><circle fill="rgba(255,255,255,0.04)" cx="1000" cy="150" r="80"/><circle fill="rgba(255,255,255,0.02)" cx="300" cy="600" r="120"/></svg>');
+            animation: float 20s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 3rem;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+
+        .logo i {
+            margin-right: 0.8rem;
+            color: #3498db;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo-subtitle {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            margin-bottom: 2rem;
+        }
+
+        .role-selection h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .role-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .role-btn {
+            padding: 1.5rem 1rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .role-btn:hover::before {
+            left: 100%;
+        }
+
+        .role-btn.active {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #fdf2f2, #fbeaea);
+            color: #e74c3c;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .role-btn i {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .role-btn.active i {
+            transform: scale(1.2);
+        }
+
+        .role-btn div {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Login Form */
+        .login-form {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .login-form.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem 1.2rem 1.2rem 3rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:valid {
+            border-color: #27ae60;
+        }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: #e74c3c;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 1.3rem;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Remember Me */
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .forgot-password {
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+
+        /* Demo Credentials */
+        .demo-credentials {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid #3498db;
+        }
+
+        .demo-credentials h4 {
+            color: #3498db;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .credential-item {
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .credential-item strong {
+            color: #333;
+        }
+
+        .credential-item code {
+            background: #e9ecef;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #e74c3c;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: #fee;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #fed7d7;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: #f0fff4;
+            color: #38a169;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #9ae6b4;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        /* Footer */
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .role-buttons {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .role-btn {
+                padding: 1.2rem 1rem;
+            }
+
+            .back-btn {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.8rem;
+            }
+
+            .remember-forgot {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .role-btn i {
+                font-size: 1.5rem;
+            }
+
+            .role-btn div {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        .login-container {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Focus styles for better accessibility */
+        .role-btn:focus,
+        input:focus,
+        button:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn" title="Back to Home">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </div>
+            <div class="logo-subtitle">Secure System Login</div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-triangle"></i> 
+            <span id="errorText">Invalid credentials. Please try again.</span>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> 
+            <span id="successText">Login successful! Redirecting...</span>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="role-selection">
+            <h3>Select Your Role</h3>
+            <div class="role-buttons">
+                <div class="role-btn" id="choRole" data-role="cho">
+                    <i class="fas fa-user-nurse"></i>
+                    <div>CHO</div>
+                </div>
+                <div class="role-btn" id="doctorRole" data-role="doctor">
+                    <i class="fas fa-user-md"></i>
+                    <div>Doctor</div>
+                </div>
+                <div class="role-btn" id="adminRole" data-role="admin">
+                    <i class="fas fa-user-shield"></i>
+                    <div>Admin</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="userId">Email</label>
+                <div class="input-container">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="userId" name="userId" required placeholder="Enter your User ID" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" required placeholder="Enter your Password" autocomplete="current-password">
+                    <span class="password-toggle" id="passwordToggle">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="remember-forgot">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginButton">
+                <span id="loginText">
+                    <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+                </span>
+                <div class="loading" id="loginLoading">
+                    <div class="spinner"></div>
+                </div>
+            </button>
+        </form>
+
+        <!-- Demo Credentials -->
+        <div class="demo-credentials">
+            <h4><i class="fas fa-info-circle"></i> Demo Credentials for Testing</h4>
+            <div class="credential-item">
+                <strong>CHO:</strong> <code>CHO001</code> / <code>cho123</code>
+            </div>
+            <div class="credential-item">
+                <strong>Doctor:</strong> <code>(DOC-mail)</code> / <code>(password)</code>
+            </div>
+            <div class="credential-item">
+                <strong>Admin:</strong> <code>ADMIN001</code> / <code>admin123</code>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>&copy; 2024 Rural TeleCare | <a href="index.html">Back to Website</a></p>
+            <p><small>Secure Government Login Portal</small></p>
+        </div>
+    </div>
+
+    <script>
+       // Global variables
+let selectedRole = '';
+const loginForm = document.getElementById('loginForm');
+const roleButtons = document.querySelectorAll('.role-btn');
+const errorMessage = document.getElementById('errorMessage');
+const successMessage = document.getElementById('successMessage');
+const loginButton = document.getElementById('loginButton');
+const loginText = document.getElementById('loginText');
+const loginLoading = document.getElementById('loginLoading');
+const passwordToggle = document.getElementById('passwordToggle');
+const passwordInput = document.getElementById('password');
+
+// Demo credentials
+const demoCredentials = {
+    cho: {
+        userId: 'CHO001',
+        password: 'cho123',
+        name: 'Ramesh Kumar',
+        center: 'Village Health Center - Block A',
+        redirect: 'cho-dashboard.html'
+    },
+    doctor: {
+        userId: 'DOC001',
+        password: 'doc123',
+        name: 'Dr. Rajesh Kumar',
+        specialty: 'General Medicine',
+        meetLink: 'https://meet.google.com/abc-defg-hij',
+        redirect: 'doctor-dashboard.html'
+    },
+    admin: {
+        userId: 'ADMIN001',
+        password: 'admin123',
+        name: 'System Administrator',
+        department: 'IT Operations',
+        redirect: 'admin-dashboard.html'
+    }
+};
+
+// Role Selection
+roleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        roleButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        selectedRole = button.dataset.role;
+        loginForm.classList.add('active');
+        updatePlaceholders();
+        document.getElementById('userId').focus();
+    });
+});
+
+// Update placeholders
+function updatePlaceholders() {
+    const userIdInput = document.getElementById('userId');
+    const placeholders = {
+        cho: 'CHO001',
+        doctor: 'DOC001',
+        admin: 'ADMIN001'
+    };
+    userIdInput.placeholder = `Enter your User ID (e.g., ${placeholders[selectedRole] || 'USER001'})`;
+}
+
+// Password toggle
+passwordToggle.addEventListener('click', () => {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    const icon = passwordToggle.querySelector('i');
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+});
+
+// Form Submission
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!selectedRole) return showError('Please select your role first');
+
+    const userId = document.getElementById('userId').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!userId || !password) return showError('Please enter both User ID and Password');
+
+    showLoading();
+
+    try {
+        if (selectedRole === 'doctor') {
+            const response = await fetch('http://localhost:8020/api/v1/doctor/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userId, password })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                hideLoading();
+                return showError(result || 'Invalid email or password');
+            }
+
+            hideLoading();
+            showSuccess('Doctor login successful! Redirecting...');
+
+            localStorage.setItem('userRole', 'doctor');
+            localStorage.setItem('doctorId', result.docId);
+            localStorage.setItem('doctorName', result.name);
+            localStorage.setItem('doctorSpecialty', result.specialization);
+            localStorage.setItem('doctorEmail', result.email);
+            localStorage.setItem('doctorLink', result.googleMeetLink);
+
+            setTimeout(() => window.location.href = 'doctor-dashboard.html', 1500);
+
+        }  else {
+            // Demo login for CHO and Admin
+            const credentials = demoCredentials[selectedRole];
+
+            await new Promise(res => setTimeout(res, 500));
+
+            if (userId.toUpperCase() === credentials.userId.toUpperCase() && password === credentials.password) {
+                hideLoading();
+                showSuccess('Login successful! Redirecting...');
+
+                sessionStorage.setItem('userRole', selectedRole);
+                sessionStorage.setItem('userData', JSON.stringify(credentials));
+
+                // Remember Me
+                if (document.getElementById('rememberMe').checked) {
+                    localStorage.setItem('rememberedUser', userId.toUpperCase());
+                    localStorage.setItem('rememberedRole', selectedRole);
+                } else {
+                    localStorage.removeItem('rememberedUser');
+                    localStorage.removeItem('rememberedRole');
+                }
+
+                setTimeout(() => window.location.href = credentials.redirect, 1500);
+            } else {
+                hideLoading();
+                showError('Invalid User ID or Password. Please check your credentials.');
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        hideLoading();
+        showError('Something went wrong. Please try again later.');
+    }
+});
+
+// Helper Functions
+function showError(msg) {
+    errorMessage.querySelector('#errorText').textContent = msg;
+    errorMessage.classList.add('show');
+    successMessage.classList.remove('show');
+    setTimeout(() => errorMessage.classList.remove('show'), 5000);
+}
+
+function showSuccess(msg) {
+    successMessage.querySelector('#successText').textContent = msg;
+    successMessage.classList.add('show');
+    errorMessage.classList.remove('show');
+}
+
+function showLoading() {
+    loginButton.disabled = true;
+    loginText.style.opacity = '0';
+    loginLoading.style.display = 'block';
+}
+
+function hideLoading() {
+    loginButton.disabled = false;
+    loginText.style.opacity = '1';
+    loginLoading.style.display = 'none';
+}
+
+// Remember Me functionality
+window.addEventListener('DOMContentLoaded', () => {
+    const rememberedUser = localStorage.getItem('rememberedUser');
+    const rememberedRole = localStorage.getItem('rememberedRole');
+    if (rememberedUser && rememberedRole) {
+        document.getElementById('userId').value = rememberedUser;
+        document.getElementById('rememberMe').checked = true;
+        const roleButton = document.querySelector(`[data-role="${rememberedRole}"]`);
+        roleButton?.click();
+    }
+});
+
+// Input validation: uppercase + remove spaces
+document.getElementById('userId').addEventListener('input', function() {
+    this.value = this.value.toUpperCase().replace(/\s/g, '');
+});
+
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Alt + 1, 2, 3 for role selection
+            if (e.altKey) {
+                if (e.key === '1') roleButtons[0].click();
+                if (e.key === '2') roleButtons[1].click();
+                if (e.key === '3') roleButtons[2].click();
+            }
+        });
+
+        // Forgot password handler
+        document.querySelector('.forgot-password').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Password Reset:\n\nPlease contact your system administrator or IT support for password reset assistance.\n\nEmail: admin@ruraltelecare.gov.in\nPhone: 1800-TELECARE');
+        });
+
+        // Auto-focus management
+        document.getElementById('userId').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
+
+        // Security: Clear sensitive data on page unload
+        window.addEventListener('beforeunload', () => {
+            document.getElementById('password').value = '';
+        });
+
+        // Console welcome message
+        console.log('🔐 Rural TeleCare Login Portal');
+        console.log('🏥 Secure Authentication System');
+        console.log('👨‍⚕️ Demo Credentials Available');
+        console.log('🛡️ Government Grade Security');
+
+        // Add some interactive feedback
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

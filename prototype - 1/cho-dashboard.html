@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHO Dashboard - Rural TeleCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Dashboard Stats */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.patients { border-left-color: #3498db; }
+        .stat-card.appointments { border-left-color: #27ae60; }
+        .stat-card.consultations { border-left-color: #f39c12; }
+        .stat-card.pending { border-left-color: #e74c3c; }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card.patients .stat-icon { background: #3498db; }
+        .stat-card.appointments .stat-icon { background: #27ae60; }
+        .stat-card.consultations .stat-icon { background: #f39c12; }
+        .stat-card.pending .stat-icon { background: #e74c3c; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .stat-change.positive { color: #27ae60; }
+        .stat-change.negative { color: #e74c3c; }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1);
+        }
+
+        .action-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .action-card p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+        }
+
+        /* Recent Activities */
+        .activities-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-all {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .view-all:hover {
+            color: #2980b9;
+        }
+
+        .activities-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background 0.3s;
+        }
+
+        .activity-item:hover {
+            background: #f8f9fa;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .activity-icon.patient { background: #3498db; }
+        .activity-icon.consultation { background: #27ae60; }
+        .activity-icon.prescription { background: #f39c12; }
+        .activity-icon.appointment { background: #e74c3c; }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f8f9fa;
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success { border-left-color: #27ae60; }
+        .notification.error { border-left-color: #e74c3c; }
+        .notification.info { border-left-color: #3498db; }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .notification.success .notification-icon { background: #27ae60; }
+        .notification.error .notification-icon { background: #e74c3c; }
+        .notification.info .notification-icon { background: #3498db; }
+
+        .notification-text h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .notification-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card,
+            .action-card {
+                padding: 1.5rem;
+            }
+
+            .action-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                Rural TeleCare
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Ramesh Kumar</h3>
+                        <p id="userCenter">Village Health Center - Block A</p>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Stats -->
+        <section class="stats-section">
+            <div class="stat-card patients">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="totalPatients">247</div>
+                        <div class="stat-label">Total Patients</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +12% this month
+                </div>
+            </div>
+
+            <div class="stat-card appointments">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="todayAppointments">8</div>
+                        <div class="stat-label">Today's Appointments</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 2 completed
+                </div>
+            </div>
+
+            <div class="stat-card consultations">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="monthlyConsultations">156</div>
+                        <div class="stat-label">Monthly Consultations</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                </div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> +8% vs last month
+                </div>
+            </div>
+
+            <div class="stat-card pending">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-number" id="pendingRequests">3</div>
+                        <div class="stat-label">Pending Requests</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-change negative">
+                    <i class="fas fa-exclamation-triangle"></i> Needs attention
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3>Register New Patient</h3>
+                <p>Register a new patient with Aadhaar-linked ID for medical consultations and digital health records.</p>
+                <button class="action-btn" onclick="openModal('registerPatientModal')">
+                    <i class="fas fa-plus"></i> Register Patient
+                </button>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Record Vitals</h3>
+                <p>Record patient vital signs including blood pressure, weight, height, temperature, and other measurements.</p>
+                <button class="action-btn" onclick="openModal('recordVitalsModal')">
+                    <i class="fas fa-clipboard-list"></i> Record Vitals
+                </button>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Connect to Doctor</h3>
+                <p>Connect patient to appropriate specialist doctor and initiate video consultation session.</p>
+                <button class="action-btn" onclick="openModal('connectDoctorModal')">
+                    <i class="fas fa-link"></i> Connect Patient
+                </button>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <h3>Patient History</h3>
+                <p>View comprehensive medical history, previous consultations, and treatment records of patients.</p>
+                <button class="action-btn" onclick="openModal('patientHistoryModal')">
+                    <i class="fas fa-history"></i> View History
+                </button>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3>Share Patient Details</h3>
+                <p>Share patient information and current vitals with consulting doctor during appointment.</p>
+                <button class="action-btn" onclick="sharePatientDetails()">
+                    <i class="fas fa-share"></i> Share Details
+                </button>
+            </div>
+
+           <div class="action-card">
+    <div class="action-icon">
+        <i class="fas fa-calendar-alt"></i>
+    </div>
+    <h3>Manage Appointments</h3>
+    <p>View, schedule, and manage today's patient appointments and consultation schedules.</p>
+    <button class="action-btn" onclick="openAppointmentsModal()">
+        <i class="fas fa-calendar"></i> View Appointments
+    </button>
+</div>
+        </section>
+
+        <!-- Recent Activities -->
+        <section class="activities-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-clock"></i>
+                    Recent Activities
+                </h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="activities-list" id="activitiesList">
+                <div class="activity-item">
+                    <div class="activity-icon patient">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">New Patient Registered</div>
+                        <div class="activity-description">Sita Devi (Age: 45) registered for general consultation</div>
+                    </div>
+                    <div class="activity-time">2 min ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon consultation">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Video Consultation Completed</div>
+                        <div class="activity-description">Ram Singh consulted with Dr. Rajesh Kumar - Hypertension</div>
+                    </div>
+                    <div class="activity-time">15 min ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon prescription">
+                        <i class="fas fa-prescription-bottle-alt"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Digital Prescription Issued</div>
+                        <div class="activity-description">Prescription sent to Meera Sharma for diabetes management</div>
+                    </div>
+                    <div class="activity-time">32 min ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon appointment">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Appointment Scheduled</div>
+                        <div class="activity-description">Ravi Kumar scheduled for pediatric consultation at 2:00 PM</div>
+                    </div>
+                    <div class="activity-time">1 hour ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon patient">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">Vitals Recorded</div>
+                        <div class="activity-description">BP, weight, and temperature recorded for Lakshmi Devi</div>
+                    </div>
+                    <div class="activity-time">2 hours ago</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Patient Registration Modal -->
+    <div id="registerPatientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Register New Patient</h3>
+                <button class="close-btn" onclick="closeModal('registerPatientModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerPatientForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientName">Full Name *</label>
+                            <input type="text" id="patientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientAge">Age *</label>
+                            <input type="number" id="patientAge" min="1" max="120" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientGender">Gender *</label>
+                            <select id="patientGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientPhone">Phone Number</label>
+                            <input type="tel" id="patientPhone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAadhaar">Aadhaar Number *</label>
+                        <input type="text" id="patientAadhaar"  maxlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAddress">Address</label>
+                        <textarea id="patientAddress" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact</label>
+                        <input type="tel" id="emergencyContact">
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Register Patient
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Vitals Modal -->
+    <div id="recordVitalsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-heartbeat"></i> Record Patient Vitals</h3>
+                <button class="close-btn" onclick="closeModal('recordVitalsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="recordVitalsForm">
+                    <div class="form-group">
+                        <label for="patientSelect">Select Patient *</label>
+                        <select id="patientSelect" required>
+                            <option value="">Choose a patient...</option>
+                           
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="systolicBP">Systolic BP (mmHg) *</label>
+                            <input type="number" id="systolicBP" min="60" max="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="diastolicBP">Diastolic BP (mmHg) *</label>
+                            <input type="number" id="diastolicBP" min="40" max="150" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weight">Weight (kg) *</label>
+                            <input type="number" id="weight" min="1" max="300" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (cm) *</label>
+                            <input type="number" id="height" min="50" max="250" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="temperature">Temperature (°F)</label>
+                            <input type="number" id="temperature" min="90" max="110" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="heartRate">Heart Rate (bpm)</label>
+                            <input type="number" id="heartRate" min="30" max="200">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodSugar">Blood Sugar (mg/dL)</label>
+                        <input type="number" id="bloodSugar" min="50" max="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="symptoms">Current Symptoms</label>
+                        <textarea id="symptoms" rows="3" placeholder="Describe patient's current symptoms..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Record Vitals
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connect to Doctor Modal -->
+    <div id="connectDoctorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-video"></i> Connect Patient to Doctor</h3>
+                <button class="close-btn" onclick="closeModal('connectDoctorModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="connectDoctorForm">
+                    <div class="form-group">
+                        <label for="patientSelectDoctor">Select Patient *</label>
+                        <select id="patientSelectDoctor" required>
+                            <option value="">Choose a patient...</option>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialtySelect">Medical Specialty *</label>
+                        <select id="specialtySelect" required>
+                            <option value="">Select specialty...</option>
+                            <option value="general">General Medicine</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="dermatology">Dermatology</option>
+                            <option value="gynecology">Gynecology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorSelect">Available Doctors *</label>
+                        <select id="doctorSelect" required disabled>
+                            <option value="">Select specialty first...</option>
+                        </select>
+                    </div>
+                   
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-phone"></i> Request Consultation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<!--vedio-->
+    <div class="form-group">
+    <button id="videoCallBtn" type="button" class="submit-btn" disabled>
+        <i class="fas fa-video"></i> Start Video Call
+     </button>
+</div>
+
+
+    <!-- Patient History Modal -->
+    <div id="patientHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-medical"></i> Patient Medical History</h3>
+                <button class="close-btn" onclick="closeModal('patientHistoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="patientSearchHistory">Search Patient</label>
+                    <select id="patientSearchHistory" onchange="loadPatientHistory()">
+                        <option value="">Select a patient...</option>
+                       
+                    </select>
+                </div>
+                <div id="patientHistoryContent" style="display: none;">
+                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin-top: 1rem;">
+                        <h4 style="color: #333; margin-bottom: 1rem;">Patient Information</h4>
+                        <div id="patientInfo" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                            <!-- Patient info will be populated here -->
+                        </div>
+                        
+                        <h4 style="color: #333; margin-bottom: 1rem;">Recent Consultations</h4>
+                        <div id="consultationHistory">
+                            <!-- Consultation history will be populated here -->
+                        </div>
+                          <h4 style="color: #333; margin-bottom: 1rem;">Recent Vitals</h4>
+        <div id="vitalsHistory">
+            <!-- Vitals history will be populated here -->
+        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments Modal -->
+    <div id="appointmentsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-calendar-alt"></i> Today's Appointments</h3>
+            <button class="close-btn" onclick="closeModal('appointmentsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="appointmentsList">
+                <!-- Cards will be injected here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i id="notificationIcon" class="fas fa-check"></i>
+            </div>
+            <div class="notification-text">
+                <h4 id="notificationTitle">Success</h4>
+                <p id="notificationMessage">Operation completed successfully!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthentication();
+            loadUserData();
+            initializeSpecialtyDoctor();
+        });
+
+        // Check if user is authenticated
+        function checkAuthentication() {
+            const userRole = sessionStorage.getItem('userRole');
+            if (userRole !== 'cho') {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
+        // Load user data
+        function loadUserData() {
+            const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
+            if (userData.name) {
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userCenter').textContent = userData.center;
+            }
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Notification system
+        function showNotification(type, title, message) {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const titleEl = document.getElementById('notificationTitle');
+            const messageEl = document.getElementById('notificationMessage');
+
+            // Set notification content
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+
+            // Set notification type
+            notification.className = `notification ${type}`;
+            
+            // Set appropriate icon
+            const icons = {
+                success: 'fas fa-check',
+                error: 'fas fa-times',
+                info: 'fas fa-info'
+            };
+            icon.className = icons[type] || 'fas fa-info';
+
+            // Show notification
+            notification.classList.add('show');
+
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+       // Patient registration form
+document.getElementById('registerPatientForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const patientName = document.getElementById('patientName').value;
+    const patientAge = parseInt(document.getElementById('patientAge').value);
+    const patientGender = document.getElementById('patientGender').value;
+    const patientMobile = document.getElementById('patientPhone').value;
+    const patientAddress = document.getElementById('patientAddress').value;
+    const patientAadhaar = parseInt(document.getElementById('patientAadhaar').value);
+
+    // Prepare payload
+    const payload = {
+        name: patientName,
+        age: patientAge,
+        gender: patientGender,
+        mobileNo: patientMobile,
+        address: patientAddress,
+        addharId: patientAadhaar
+    };
+
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/patient/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Success notification
+            showNotification('success', 'Patient Registered', `${patientName} has been successfully registered in the system.`);
+            closeModal('registerPatientModal');
+            e.target.reset();
+
+            // Update stats
+            const totalPatients = document.getElementById('totalPatients');
+            totalPatients.textContent = parseInt(totalPatients.textContent) + 1;
+        } else {
+            // Error notification from backend
+            showNotification('error', 'Registration Failed', data.message || 'An error occurred while registering patient.');
+        }
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('error', 'Registration Failed', 'Unable to connect to the server.');
+    }
+});
+
+
+
+async function loadPatients() {
+
+
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/patient/get');
+        const patients = await response.json();
+
+        const patientSelect = document.getElementById('patientSelect');
+        patientSelect.innerHTML = '<option value="">Choose a patient...</option>'; // reset
+
+        patients.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.patientId; // store ID here
+            option.textContent = p.name;
+            patientSelect.appendChild(option);
+        });
+
+        patientsLoaded = true; // ✅ set flag only after successful load
+
+    } catch (err) {
+        console.error('Error loading patients:', err);
+        showNotification('error', 'Failed', 'Cannot load patients from server.');
+    }
+}
+
+// Load patients only when dropdown is clicked or focused
+const patientSelect = document.getElementById('patientSelect');
+patientSelect.addEventListener('focus', loadPatients);
+// triggers when user clicks/tabs in
+// or
+// patientSelect.addEventListener('click', loadPatients);
+
+
+
+        // Record vitals form
+      document.getElementById('recordVitalsForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const patientId = document.getElementById('patientSelect').value; // selected patient ID
+    if (!patientId) {
+        showNotification('error', 'Select Patient', 'Please select a patient.');
+        return;
+    }
+
+    const payload = {
+        patient: { patientId: patientId }, // associate patient with patientDocument
+        systolicBP: parseInt(document.getElementById('systolicBP').value),
+        diastolicBP: parseInt(document.getElementById('diastolicBP').value),
+        weight: parseInt(document.getElementById('weight').value),
+        height: parseInt(document.getElementById('height').value),
+        temperature: parseInt(document.getElementById('temperature').value || 0),
+        heartRate: parseInt(document.getElementById('heartRate').value || 0),
+        bloodSugar: parseInt(document.getElementById('bloodSugar').value || 0),
+        patientSymptomp: document.getElementById('symptoms').value
+    };
+
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/patient/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+           // credentials: 'include' // needed for session handling
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('success', 'Vitals Recorded', `Vitals recorded successfully for ${patientSelect.options[patientSelect.selectedIndex].text}`);
+            e.target.reset();
+        } else {
+            showNotification('error', 'Failed', data || 'Error recording vitals');
+        }
+
+    } catch (err) {
+        console.error(err);
+        showNotification('error', 'Failed', 'Cannot connect to server.');
+    }
+});
+
+
+        // Connect to doctor form
+        document.getElementById('connectDoctorForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const patientSelect = document.getElementById('patientSelectDoctor');
+            const doctorSelect = document.getElementById('doctorSelect');
+            const selectedPatient = patientSelect.options[patientSelect.selectedIndex].text;
+            const selectedDoctor = doctorSelect.options[doctorSelect.selectedIndex].text;
+            
+            setTimeout(() => {
+                showNotification('success', 'Consultation Requested', `Consultation request sent to ${selectedDoctor} for ${selectedPatient.split('(')[0].trim()}.`);
+                closeModal('connectDoctorModal');
+                e.target.reset();
+                
+                // Update pending requests
+                const pendingRequests = document.getElementById('pendingRequests');
+                pendingRequests.textContent = parseInt(pendingRequests.textContent) + 1;
+            }, 1500);
+        });
+
+        // Initialize specialty-doctor mapping
+        function initializeSpecialtyDoctor() {
+            const specialtySelect = document.getElementById('specialtySelect');
+            const doctorSelect = document.getElementById('doctorSelect');
+            
+            const doctorsBySpecialty = {
+                general: ['Dr. Rajesh Kumar', 'Dr. Amit Patel'],
+                pediatrics: ['Dr. Priya Sharma', 'Dr. Kavita Singh'],
+                cardiology: ['Dr. Suresh Reddy', 'Dr. Anil Gupta'],
+                dermatology: ['Dr. Sanjay Mehta', 'Dr. Ritu Sharma'],
+                gynecology: ['Dr. Sunita Devi', 'Dr. Pooja Agarwal'],
+                orthopedics: ['Dr. Vikram Singh', 'Dr. Rakesh Kumar']
+            };
+
+            specialtySelect.addEventListener('change', () => {
+                const selectedSpecialty = specialtySelect.value;
+                doctorSelect.innerHTML = '<option value="">Select doctor...</option>';
+                
+                if (selectedSpecialty && doctorsBySpecialty[selectedSpecialty]) {
+                    doctorSelect.disabled = false;
+                    doctorsBySpecialty[selectedSpecialty].forEach(doctor => {
+                        const option = document.createElement('option');
+                        option.value = doctor.toLowerCase().replace(/\s+/g, '');
+                        option.textContent = doctor;
+                        doctorSelect.appendChild(option);
+                    });
+                } else {
+                    doctorSelect.disabled = true;
+                }
+            });
+        }
+
+        // Load patient history and load patient
+        async function loadPatients2() {
+    const select = document.getElementById('patientSearchHistory');
+    try {
+        const response = await fetch("http://localhost:8020/api/v1/patient/get");
+        if (!response.ok) throw new Error("Failed to load patients");
+
+        const patients = await response.json();
+        select.innerHTML = '<option value="">Select a patient...</option>'; // reset
+
+        patients.forEach(p => {
+            const option = document.createElement("option");
+            option.value = p.patientId;   // 👈 this is what loadPatientHistory() will use
+            option.textContent = p.name; // what user sees
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error fetching patients:", error);
+    }
+}
+
+// Load patients when modal/page opens
+document.addEventListener("DOMContentLoaded", loadPatients2);
+
+async function loadPatientHistory() {
+    const patientSelect = document.getElementById('patientSearchHistory');
+    const historyContent = document.getElementById('patientHistoryContent');
+    const patientInfo = document.getElementById('patientInfo');
+    const consultationHistory = document.getElementById('consultationHistory');
+    const vitalsHistory = document.getElementById('vitalsHistory');
+
+    const patientId = patientSelect.value;
+
+    if (patientId) {
+        historyContent.style.display = 'block';
+
+        try {
+            const response = await fetch(`http://localhost:8020/api/v1/patient/getHistory/${patientId}`);
+            if (!response.ok) throw new Error("Failed to fetch history");
+
+            const data = await response.json();
+            const p = data.patient || {};
+            const doc = p.patientDocument || {};
+
+            // ✅ Patient Info
+            patientInfo.innerHTML = `
+                <div><strong>Name:</strong> ${p.name || 'N/A'}</div>
+                <div><strong>Age:</strong> ${p.age || 'N/A'} years</div>
+                <div><strong>Gender:</strong> ${p.gender || 'N/A'}</div>
+                <div><strong>Phone:</strong> ${p.mobileNo || 'N/A'}</div>
+                <div><strong>Aadhaar:</strong> ${p.addharId || 'N/A'}</div>
+                <div><strong>Address:</strong> ${p.address || 'N/A'}</div>
+            `;
+
+            // ✅ Consultation History
+            consultationHistory.innerHTML = (p.consultations || [])
+                .map(c => `
+                    <div style="border: 1px solid #ddd; border-radius: 5px; padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>${c.date || ''}</strong> - ${c.doctor?.name || ''}<br>
+                                <small>Condition: ${c.condition || ''}</small>
+                            </div>
+                            <span style="background: #27ae60; color: white; padding: 0.2rem 0.8rem; border-radius: 10px; font-size: 0.8rem;">
+                                ${c.status || 'Completed'}
+                            </span>
+                        </div>
+                    </div>
+                `).join('') || '<p>No consultation history found.</p>';
+
+            // ✅ Vitals History (from patientDocument, since your response doesn’t have a separate vitals array)
+            vitalsHistory.innerHTML = `
+                <div style="border: 1px solid #ddd; border-radius: 5px; padding: 1rem; margin-bottom: 1rem;">
+                    <strong>Vitals</strong><br>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem;">
+                        <div><small>BP: ${doc.systolicBP || '-'} / ${doc.diastolicBP || '-'}</small></div>
+                        <div><small>Weight: ${doc.weight || '-'}</small></div>
+                        <div><small>Height: ${doc.height || '-'}</small></div>
+                        <div><small>Temp: ${doc.temperature || '-'}</small></div>
+                        <div><small>Heart Rate: ${doc.heartRate || '-'}</small></div>
+                        <div><small>Blood Sugar: ${doc.bloodSugar || '-'}</small></div>
+                        <div><small>Symptom: ${doc.patientSymptomp || '-'}</small></div>
+                    </div>
+                </div>
+            `;
+
+        } catch (error) {
+            console.error(error);
+            patientInfo.innerHTML = '<p style="color:red;">Error loading patient history</p>';
+            consultationHistory.innerHTML = '';
+            vitalsHistory.innerHTML = '';
+        }
+    } else {
+        historyContent.style.display = 'none';
+    }
+    
+}
+
+
+
+            
+
+        // Share patient details function
+        function sharePatientDetails() {
+            showNotification('info', 'Feature Available', 'Patient details sharing is available during active video consultations.');
+        }
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.clear();
+                localStorage.removeItem('rememberedUser');
+                localStorage.removeItem('rememberedRole');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Auto-refresh stats every 30 seconds
+        setInterval(() => {
+            // In a real application, this would fetch updated data from the server
+            console.log('Refreshing dashboard stats...');
+        }, 30000);
+
+        // Add some visual feedback for better UX
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+
+
+
+
+let patientsCache = [];
+let doctorsCache = [];
+
+// Load patients from backend
+async function loadPatients3() {
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/patient/get');
+        if (!response.ok) throw new Error("Failed to fetch patients");
+
+        patientsCache = await response.json();
+        const patientSelect = document.getElementById('patientSelectDoctor');
+        patientSelect.innerHTML = '<option value="">Choose a patient...</option>';
+
+        patientsCache.forEach(patient => {
+            const option = document.createElement('option');
+            option.value = patient.adhar || patient.addharId || "";
+            option.textContent = `${patient.name} (${patient.mobileNo})`;
+            patientSelect.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert("Error loading patients");
+    }
+}
+
+// Load doctors based on selected specialty
+async function loadDoctorsBySpecialty(specialty) {
+    if (!specialty) return;
+
+    try {
+        const response = await fetch(`http://localhost:8020/api/v1/doctor/sp/${specialty}`);
+        if (!response.ok) throw new Error("Failed to fetch doctors");
+
+        doctorsCache = await response.json();
+
+        const doctorSelect = document.getElementById('doctorSelect');
+        doctorSelect.innerHTML = '<option value="">Select available doctor...</option>';
+
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+        doctorsCache.forEach(doc => {
+            const [fromH, fromM] = doc.availableFrom.split(':').map(Number);
+            const [toH, toM] = doc.availableTo.split(':').map(Number);
+            const fromMinutes = fromH * 60 + fromM;
+            const toMinutes = toH * 60 + toM;
+
+            let optionText;
+            let isAvailableNow = false;
+
+            if (currentMinutes >= fromMinutes && currentMinutes <= toMinutes) {
+                optionText = `${doc.name} (${doc.availableFrom} - ${doc.availableTo}) [Available Now]`;
+                isAvailableNow = true;
+            } else if (currentMinutes < fromMinutes) {
+                optionText = `${doc.name} (Next available: ${doc.availableFrom} - ${doc.availableTo})`;
+            } else {
+                optionText = `${doc.name} (Next available tomorrow: ${doc.availableFrom} - ${doc.availableTo})`;
+            }
+
+            const option = document.createElement('option');
+            option.value = doc.email;
+            option.textContent = optionText;
+            option.dataset.available = isAvailableNow.toString();
+            doctorSelect.appendChild(option);
+        });
+
+        doctorSelect.disabled = false;
+
+    } catch (err) {
+        console.error(err);
+        alert("Error loading doctors");
+    }
+}
+
+// Handle consultation request
+async function requestConsultation(event) {
+    event.preventDefault();
+
+    const patientSelect = document.getElementById('patientSelectDoctor');
+    const doctorSelect = document.getElementById('doctorSelect');
+
+    const selectedPatient = patientSelect.value; // Aadhaar or patientId
+    const selectedDoctorEmail = doctorSelect.value;
+
+    if (!selectedPatient || !selectedDoctorEmail) {
+        alert("Please select patient and doctor");
+        return;
+    }
+
+    try {
+        // Build request payload
+        const payload = {
+            patient: { addharId: selectedPatient },
+            doctor: { email: selectedDoctorEmail }
+        };
+
+        const response = await fetch('http://localhost:8020/api/v1/consult/consult', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText);
+        }
+
+        const result = await response.json();
+        console.log("Consultation created:", result);
+        alert(`Consultation scheduled with Dr. ${result.doctor.name} on ${new Date(result.scheduledDate).toLocaleString()}`);
+
+        closeModal('connectDoctorModal');
+
+        // Reset form
+        document.getElementById('connectDoctorForm').reset();
+        doctorSelect.disabled = true;
+        doctorSelect.innerHTML = '<option value="">Select specialty first...</option>';
+
+    } catch (err) {
+        console.error(err);
+        alert("Error creating consultation: " + err.message);
+    }
+}
+
+// Event listeners
+document.getElementById('specialtySelect').addEventListener('change', (e) => {
+    loadDoctorsBySpecialty(e.target.value);
+});
+
+document.getElementById('connectDoctorForm').addEventListener('submit', requestConsultation);
+
+// Load patients when modal opens
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+    loadPatients3();
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Handle video call button
+document.addEventListener('DOMContentLoaded', () => {
+    const doctorSelect = document.getElementById('doctorSelect');
+    const patientSelect = document.getElementById('patientSelectDoctor');
+    const videoCallBtn = document.getElementById('videoCallBtn');
+
+    async function checkDoctorAvailability() {
+        const doctorEmail = doctorSelect.value;
+        const patientId = patientSelect.value;
+
+        // If doctor or patient not selected, disable button
+        if (!doctorEmail || !patientId) {
+            videoCallBtn.disabled = true;
+            videoCallBtn.textContent = "Start Video Call";
+            return;
+        }
+
+        try {
+            // Ping /video/start to check if doctor is busy
+            const response = await fetch(`http://localhost:8020/api/v1/video/start?doctorEmail=${doctorEmail}`, { method: 'POST' });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                videoCallBtn.disabled = true;
+                videoCallBtn.textContent = errorText; // show busy message
+                return;
+            }
+
+            const { meetingUrl } = await response.json();
+
+            // Doctor available → enable button
+            videoCallBtn.disabled = false;
+            videoCallBtn.textContent = "Start Video Call";
+
+            // Assign click event for starting consultation + video
+            videoCallBtn.onclick = async () => {
+                try {
+                    // 1️⃣ Create consultation
+                    const payload = {
+                        patient: { addharId: patientId },
+                        doctor: { email: doctorEmail }
+                    };
+
+                    const consultResp = await fetch('http://localhost:8020/api/v1/consult/consult', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!consultResp.ok) {
+                        const errText = await consultResp.text();
+                        throw new Error(errText);
+                    }
+
+                    const consult = await consultResp.json();
+                    const consultId = consult.conId;
+
+                    // 2️⃣ Mark consultation ONGOING & doctor busy
+                    await fetch(`http://localhost:8020/api/v1/consult/updateStatus/${consultId}?status=ONGOING`, { method: 'PUT' });
+                    await fetch(`http://localhost:8020/api/v1/video/start?doctorEmail=${doctorEmail}`, { method: 'POST' });
+
+                    // 3️⃣ Open video meeting
+                    const meetWindow = window.open(meetingUrl, "_blank");
+                    videoCallBtn.textContent = "Call in Progress...";
+                    videoCallBtn.disabled = true;
+
+                    // 4️⃣ Poll to detect when call ends
+                    const checkWindowClosed = setInterval(async () => {
+                        if (meetWindow.closed) {
+                            clearInterval(checkWindowClosed);
+
+                            // 5️⃣ Complete consultation & free doctor
+                            await fetch(`http://localhost:8020/api/v1/consult/updateStatus/${consultId}?status=COMPLETED`, { method: 'PUT' });
+                            await fetch(`http://localhost:8020/api/v1/video/end?doctorEmail=${doctorEmail}`, { method: 'POST' });
+
+                            alert("✅ Consultation completed. Doctor is now free.");
+                            videoCallBtn.textContent = "Start Video Call";
+                            videoCallBtn.disabled = false;
+
+                            // Auto-check doctor availability for next patient
+                            checkDoctorAvailability();
+                        }
+                    }, 1000);
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Error starting consultation: " + err.message);
+                    videoCallBtn.textContent = "Start Video Call";
+                    videoCallBtn.disabled = false;
+                }
+            };
+
+        } catch (err) {
+            console.error(err);
+            videoCallBtn.disabled = true;
+            videoCallBtn.textContent = "Error checking availability";
+        }
+    }
+
+    // Event listeners
+    doctorSelect.addEventListener('change', checkDoctorAvailability);
+    patientSelect.addEventListener('change', checkDoctorAvailability);
+});
+
+
+
+
+// Event listeners
+document.getElementById('specialtySelect').addEventListener('change', (e) => {
+    loadDoctorsBySpecialty(e.target.value);
+});
+
+document.getElementById('connectDoctorForm').addEventListener('submit', requestConsultation);
+
+// Modal helpers
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+    loadPatients3();
+}
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+//open appointment
+async function openAppointmentsModal() {
+    const modal = document.getElementById('appointmentsModal');
+    const listContainer = document.getElementById('appointmentsList');
+    listContainer.innerHTML = ''; // Clear previous content
+
+    try {
+        const response = await fetch('http://localhost:8020/api/v1/consult/todayAppointments');
+        if (!response.ok) throw new Error("Failed to fetch appointments");
+
+        const appointments = await response.json(); // array of consultations
+        if (!appointments.length) {
+            listContainer.innerHTML = "<p>No appointments today.</p>";
+            modal.style.display = 'block';
+            return;
+        }
+
+        // Sort by scheduledDate/time
+        appointments.sort((a, b) => new Date(a.scheduledDate) - new Date(b.scheduledDate));
+
+        appointments.forEach(consult => {
+            // Status and border color
+            let status = consult.status || "REQUEST";
+            let borderColor = "#3498db"; // Scheduled
+            if (status.toUpperCase() === "COMPLETED") borderColor = "#27ae60";
+            else if (status.toUpperCase() === "ONGOING") borderColor = "#f39c12";
+
+            // Doctor & patient info
+            const doctorName = consult.doctor?.name || "Unknown Doctor";
+            const specialization = consult.doctor?.specialization || "";
+            const patientName = consult.patient?.name || "Unknown Patient";
+            const symptom = consult.patient?.symptoms || "";
+
+            // Format time
+            const timeStr = consult.scheduledDate || consult.time;
+            const formattedTime = timeStr ? new Date(timeStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
+
+            const div = document.createElement('div');
+            div.style.border = "1px solid #ddd";
+            div.style.borderRadius = "8px";
+            div.style.padding = "1.5rem";
+            div.style.marginBottom = "1rem";
+            div.style.borderLeft = `4px solid ${borderColor}`;
+
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: #333;">${formattedTime} - ${patientName}</h4>
+                        <p style="color: #666; margin: 0.5rem 0;">${specialization} | ${doctorName}</p>
+                        <p style="color: #666; margin: 0;"><small>${symptom}</small></p>
+                    </div>
+                    <div>
+                        <span style="background: ${borderColor}; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                            ${status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
+                        </span>
+                    </div>
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+
+        modal.style.display = 'block';
+    } catch (err) {
+        console.error(err);
+        listContainer.innerHTML = `<p>Error loading appointments: ${err.message}</p>`;
+        modal.style.display = 'block';
+    }
+}
+
+// Close modal
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+
+
+        console.log('🏥 CHO Dashboard Loaded Successfully');
+        console.log('👩‍⚕️ Community Health Officer Portal Active');
+        console.log('📊 Dashboard Stats: Live');
+    </script>
+</body>
+</html>
