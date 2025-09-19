@@ -1,4 +1,9 @@
+# Force language mapping
 *.java linguist-language=Java
 *.html linguist-language=HTML
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
+
+# Ignore vendor/minified files
+*.min.js linguist-vendored
+*.min.css linguist-vendored
