@@ -61,7 +61,8 @@ git clone https://github.com/RakeshKayal/Telemedicine-.git
 cd telemedicine-hackathon<br/>
 👨‍💻 Team
 
-Developed by Rakesh Kayal, Debajyoti Parui, Prabhat Maldal,Aritra Adak, Mehbub Hossain Sk, Aprita mity for Hackathon
+Developed by Rakesh Kayal, Debajyoti Parui, Prabhat Maldal,Aritra Adak, Mehbub Hossain Sk, Aprita maity for Hackathon
+
 
 
 
