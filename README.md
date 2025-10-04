@@ -1,4 +1,4 @@
-# Telemedicine Hackathon Project
+# Telemedicine Smart India Hackathon Project 2025
 
 A full-stack **Telemedicine application** built our first prototype for a hackathon.  
 It provides an online platform for patients and doctors to connect via real-time consultation, appointment booking, and health management.
@@ -62,6 +62,7 @@ cd telemedicine-hackathon<br/>
 👨‍💻 Team
 
 Developed by Rakesh Kayal, Debajyoti Parui, Prabhat Maldal,Aritra Adak, Mehbub Hossain Sk, Aprita maity for Hackathon
+
 
 
 
